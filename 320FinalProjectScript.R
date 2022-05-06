@@ -67,3 +67,45 @@ games_filtered_by_DS_top_5_by_yr %>%
   theme(strip.text = element_text(face="bold"),
         axis.text.x = element_blank(),
         legend.text = element_text(size=5.5)) 
+
+
+# Creating Data for Second Graph, Line Plot
+
+# Checking the columns
+games_sales %>% 
+  glimpse()
+
+# Getting the necessary columns for the plot
+# After checking the distinct values for the Year_of_Release 
+# Column, there seems to be a lot of N/A Values,
+# I'm going to remove those values as a majority of them
+# Will not be relevant to the graph.
+
+games_sales_by_genre <- games_sales %>% 
+  select(`Genre`,`Year_of_Release`,`Global_Sales`)
+
+games_sales_by_genre %>% 
+  glimpse()
+
+action_genre <- games_sales_by_genre %>% 
+  group_by(`Year_of_Release`) %>% 
+  summarize(sum_sales = sum(`Global_Sales`))
+
+ggplot(action_genre, aes(x = `Year_of_Release`,
+           y = sum_sales,
+           group = 1)) +
+  geom_line()
+
+all_genres <- games_sales_by_genre %>% 
+  group_by(`Year_of_Release`,`Genre`) %>% 
+  summarize(sum_sales = sum(`Global_Sales`)) %>% 
+  filter(`Year_of_Release` != "N/A")
+
+ggplot(all_genres, aes(x = `Year_of_Release`,
+                       y = sum_sales,
+                       group = `Genre`,
+                       color = `Genre`)) +
+  geom_point() +
+  geom_line()
+  
+
