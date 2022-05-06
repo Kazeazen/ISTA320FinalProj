@@ -1,6 +1,6 @@
 library(shiny)
 library(tidyverse)
-
+library(RColorBrewer)
 # Reading data in
 games_sales <- read_csv("data/Video_Games_Sales_as_at_22_Dec_2016.csv")
 
@@ -106,6 +106,11 @@ ggplot(all_genres, aes(x = `Year_of_Release`,
                        group = `Genre`,
                        color = `Genre`)) +
   geom_point() +
-  geom_line()
+  geom_line() +
+  theme(axis.text.x = element_text(size=5)) +
+  ylab("Sales per Million") +
+  xlab("Year") +
+  ggtitle("# of Sales for Each Genre by Year")
+        
   
 
