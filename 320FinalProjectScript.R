@@ -66,7 +66,10 @@ games_filtered_by_DS_top_5_by_yr %>%
   facet_wrap(~Year_of_Release, scales="free_x", ncol=3) +
   theme(strip.text = element_text(face="bold"),
         axis.text.x = element_blank(),
-        legend.text = element_text(size=5.5)) 
+        legend.text = element_text(size=5.5)) +
+  ggtitle("Best Selling Games on the DS by Year") +
+  xlab("Best Selling Games for each Year") +
+  ylab("Sales per Million")
 
 
 # Creating Data for Second Graph, Line Plot
@@ -113,4 +116,23 @@ ggplot(all_genres, aes(x = `Year_of_Release`,
   ggtitle("# of Sales for Each Genre by Year")
         
   
+# Getting data for third plot
+
+jpn_vs_na <- games_sales %>% 
+  select(`Name`,`Platform`,`Publisher`,`NA_Sales`,`JP_Sales`)
+
+jpn_vs_na %>% 
+  distinct(`Publisher`) # 582 total rows... thats too many to manually go through 
+# and find out which publishers are japan based
+
+jpn_vs_na %>% 
+  distinct(`Platform`) # Compared to 31 different platforms
+
+table(jpn_vs_na$Platform) # Checking which value has the most occurences,
+# DS, PS2, Ps3, Wii have the most occurences
+# I'm going to have to pick one to make a good comparison
+
+jpn_vs_na_ps2 <- jpn_vs_na %>% 
+  filter(`Platform` == "PS2") # Getting only ps2 platform
+
 
