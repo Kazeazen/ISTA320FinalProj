@@ -119,7 +119,7 @@ ggplot(all_genres, aes(x = `Year_of_Release`,
 # Getting data for third plot
 
 jpn_vs_na <- games_sales %>% 
-  select(`Name`,`Platform`,`Publisher`,`NA_Sales`,`JP_Sales`)
+  select(`Name`,`Platform`,`Publisher`,`NA_Sales`,`JP_Sales`,`Global_Sales`)
 
 jpn_vs_na %>% 
   distinct(`Publisher`) # 582 total rows... thats too many to manually go through 
@@ -135,4 +135,16 @@ table(jpn_vs_na$Platform) # Checking which value has the most occurences,
 jpn_vs_na_ps2 <- jpn_vs_na %>% 
   filter(`Platform` == "PS2") # Getting only ps2 platform
 
+jpn_vs_na_ps2 <- jpn_vs_na_ps2 %>% 
+  arrange(desc(`Global_Sales`)) %>% 
+  group_by(`Publisher`)
 
+jpn_vs_na_ps2_unique_publishers <- jpn_vs_na_ps2[!duplicated(jpn_vs_na_ps2$Publisher), ]
+
+jpn_vs_na_ps2_unique_publishers <- jpn_vs_na_ps2_unique_publishers[1:15, ]
+
+ggplot(jpn_vs_na_ps2_unique_publishers, aes(x = `NA_Sales`,
+                                            y = `Global_Sales`,
+                                            color = `Publisher`)) +
+  geom_point() +
+  ggtitle("total # of NA Sales vs total # of Global Sales on the PS2 by Publisher")
